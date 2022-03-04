@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using MEC;
 using Qurre;
@@ -12,6 +12,7 @@ namespace SCP_008
 {
     public class EventHandlers
     {
+
         public readonly Config CustomConfig;
         internal EventHandlers(Config CustomConfig) => this.CustomConfig = CustomConfig;
 
@@ -40,6 +41,7 @@ namespace SCP_008
                     ev.Target.GetEffect(EffectType.Poisoned).IsEnabled) return;
                 ev.Target.EnableEffect(EffectType.Poisoned);
                 ev.Target.ShowHint($"<color=yellow><b>SCP-008</b></color>\n{CustomConfig.InfectionAlert}");
+                Scp008(ev.Target).RunCoroutine("scp-008" + ev.Target.UserId);
             }
 
             if (ev.Target.Role == RoleType.Scp0492 && ev.Target.Id != ev.Attacker.Id && ev.Target.Ahp >= 0)
@@ -131,7 +133,7 @@ namespace SCP_008
         public IEnumerator<float> Scp008(Player player)
         {
             yield return 1f;
-            for (;player.Team != Team.SCP;)
+            for (;player.GetEffect(EffectType.Poisoned).IsEnabled;)
             {
                 Timing.WaitForSeconds(CustomConfig.WaitTimeBeforeDamageScp008);
                 if (player.Hp - CustomConfig.ZombieDamage > 0) player.Damage(CustomConfig.ZombieDamage, "Hit by scp-008");
@@ -144,6 +146,7 @@ namespace SCP_008
                     yield return Timing.WaitForSeconds(0.5f);
                     player.Hp = CustomConfig.ZombieHealth;
                     player.Ahp = CustomConfig.StartingAhp;
+                    yield break;
                 }
             }
         }
