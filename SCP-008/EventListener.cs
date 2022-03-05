@@ -142,8 +142,9 @@ namespace SCP_008
                     player.DisableEffect(EffectType.Poisoned);
                     player.DropItems();
                     Vector3 position = player.Position;
-                    player.ChangeBody(RoleType.Scp0492,false, position, player.Rotation);
+                    player.SetRole(RoleType.Scp0492);
                     yield return Timing.WaitForSeconds(0.5f);
+                    player.Position = position;
                     player.Hp = CustomConfig.ZombieHealth;
                     player.Ahp = CustomConfig.StartingAhp;
                     yield break;
