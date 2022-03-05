@@ -135,7 +135,7 @@ namespace SCP_008
             yield return 1f;
             for (;player.GetEffect(EffectType.Poisoned).IsEnabled;)
             {
-                Timing.WaitForSeconds(CustomConfig.WaitTimeBeforeDamageScp008);
+                yield return Timing.WaitForSeconds(CustomConfig.WaitTimeBeforeDamageScp008);
                 if (player.Hp - CustomConfig.ZombieDamage > 0) player.Damage(CustomConfig.ZombieDamage, "Hit by scp-008");
                 else
                 {
